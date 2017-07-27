@@ -10,9 +10,17 @@ composer require excitedcat/laravel-notification-wechat
 
 ## 使用说明
 
+编辑config/app.php文件在providers数组中增加：
+```
+ExcitedCat\WechatNotification\WechatServiceProvider::class
+```
+
+创建Notification
 ```bash
 php artisan make:notification NewOrder
 ```
+
+调用方式参考Laravel官方文档
 
 ## License
 

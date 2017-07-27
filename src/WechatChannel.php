@@ -35,7 +35,13 @@ class WechatChannel
 
         try {
             $this->app->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($openid)->send();
+            if(isset($message['onSuccess']) && is_callable($message['onSuccess'])) {
+                $message['onSuccess']();
+            }
         } catch (HttpException $e) {
+            if(isset($message['onFailure']) && is_callable($message['onSuccess'])) {
+                $message['onFailure']();
+            }
             Log::error('消息发送失败！', $message);
         }
     }
