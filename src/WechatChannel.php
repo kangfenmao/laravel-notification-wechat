@@ -23,7 +23,7 @@ class WechatChannel
         $openid = $notifiable->routeNotificationFor('Wechat');
 
         if (!$openid || strlen($openid) < 20) {
-            return;
+            return null;
         }
 
         $message = $notification->toWechat($notifiable);
@@ -34,15 +34,13 @@ class WechatChannel
         $url = $message['url'];
 
         try {
-            $this->app->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($openid)->send();
-            if(isset($message['onSuccess']) && is_callable($message['onSuccess'])) {
-                $message['onSuccess']();
-            }
+            $result = $this->app->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($openid)->send();
+            return $result;
         } catch (HttpException $e) {
-            if(isset($message['onFailure']) && is_callable($message['onSuccess'])) {
-                $message['onFailure']();
-            }
-            Log::error('消息发送失败！', $message);
+            return (object)[
+                'errcode' => $e->getCode(),
+                'errmsg'  => $e->getMessage()
+            ];
         }
     }
 }

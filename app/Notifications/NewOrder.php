@@ -19,7 +19,7 @@ class NewOrder extends Notification
      */
     public function __construct($data)
     {
-        $this->data = $data;
+        $this->data = (object) $data;
     }
 
     /**
@@ -46,13 +46,7 @@ class NewOrder extends Notification
                 'keyword2' => $data->product_name,
                 'keyword3' => $data->price,
                 'remark'   => '订单创建成功，我们正在安排发货...'
-            ],
-            'onSuccess' => function() use ($data) {
-                // 执行成功，onSuccess可选
-            },
-            'onFailure' => function() use ($data) {
-                // 执行失败，onFailure可选
-            }
+            ]
         ];
 
         return $notice;
