@@ -11,6 +11,7 @@ class NewOrder extends Notification
     use Queueable;
 
     public $data;
+    public $color;
 
     /**
      * Create a new notification instance.
@@ -20,6 +21,7 @@ class NewOrder extends Notification
     public function __construct($data)
     {
         $this->data = (object) $data;
+        $this->color = '#173177'
     }
 
     /**

@@ -21,6 +21,7 @@ class WechatChannel
     public function send($notifiable, Notification $notification)
     {
         $openid = $notifiable->routeNotificationFor('Wechat');
+        $notice = $this->app->notice;
 
         if (!$openid || strlen($openid) < 20) {
             return null;
@@ -29,13 +30,16 @@ class WechatChannel
         $message = $notification->toWechat($notifiable);
         $message['openid'] = $openid;
 
+        if (isset($notification->color)) {
+            $notice = $notice->defaultColor($notification->color);
+        }
+
         $data = $message['data'];
         $templateId = $message['templateId'];
         $url = $message['url'];
 
         try {
-            $result = $this->app->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($openid)->send();
-            return $result;
+            return $notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($openid)->send();
         } catch (HttpException $e) {
             return (object)[
                 'errcode' => $e->getCode(),
