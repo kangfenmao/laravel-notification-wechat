@@ -18,7 +18,8 @@ class LogNotification
     {
         // openid is null
         if ($event->response == null) {
-            Log::warning('openid不能为空', $event->notifiable);
+
+            Log::warning('openid不能为空', $this->object2array($event->notifiable));
         }
 
         if ($event->response->errcode == 0) {
@@ -26,5 +27,18 @@ class LogNotification
         } else {
             // on error
         }
+    }
+
+    public function object2array($object)
+    {
+        $array = array();
+        if (is_object($object)) {
+            foreach ($object as $key => $value) {
+                $array[$key] = $value;
+            }
+        } else {
+            $array = $object;
+        }
+        return $array;
     }
 }
