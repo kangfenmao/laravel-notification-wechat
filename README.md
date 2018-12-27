@@ -1,6 +1,6 @@
 # Laravel notifications for wechat
 
-本项目可以在 Laravel 5.3中使用 [EasyWechat](https://easywechat.org/) 来通知客户。
+本项目可以在 Laravel >=5.3中使用 [EasyWechat](https://easywechat.org/) 来通知客户。
 
 ## 安装说明
 
